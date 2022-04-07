@@ -1,0 +1,44 @@
+---
+title: "BIOL812_assignment1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Part B: setup
+library(dplyr)
+library(ggplot2)
+library(grid)
+
+source("http://bit.ly/theme_pub") 
+theme_set(theme_pub())
+
+#importing a csv file
+data1<-read.csv("C:/Users/ColauttiLab/Documents/Data/data-partC.csv")
+head(data1)
+
+#converting columns to proportions
+for (j in 1:ncol(data1)){
+  for (i in 1:nrow(data1)){
+        col_sum <- sum(data1[,j])
+        data1[i,j] <- data1[i,j]/col_sum
+  }
+}
+head(data1)
+
+#plot histograms
+               
+Column1<-ggplot(data1, aes(x=Col1)) + geom_histogram(binwidth=0.05, color="black", fill="light blue")
+
+Column2<-ggplot(data1, aes(x=Col2)) + geom_histogram(binwidth=0.05, color="black", fill="pink")
+
+Column3<-ggplot(data1, aes(x=Col3)) + geom_histogram(binwidth=0.05, color="white", fill="purple")
+
+Column4<-ggplot(data1, aes(x=Col4)) + geom_histogram(binwidth=0.05, color="white", fill="light green")
+
+FinalPlot<-grid.arrange(Column1, Column2, Column3, Column4, nrow=2)
+ggsave("FinalPlot.pdf", FinalPlot)
+
+
